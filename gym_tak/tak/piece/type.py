@@ -15,7 +15,7 @@ class Types(Enum):
         obj._value_ = value
         return obj
 
-    def __init__(self, blocks, ignores_block, forms_road, value, string) -> None:
+    def __init__(self, blocks: bool, ignores_block: bool, forms_road: bool, value: int, string: str) -> None:
         self.blocks = blocks
         self.ignores_block = ignores_block
         self.forms_road = forms_road

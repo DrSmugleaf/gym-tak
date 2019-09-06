@@ -14,6 +14,6 @@ class Colors(Enum):
         obj._value_ = value
         return obj
 
-    def __init__(self, value, string) -> None:
+    def __init__(self, value: int, string: str) -> None:
         self.value = value
         self.string = string

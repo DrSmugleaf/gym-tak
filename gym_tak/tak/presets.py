@@ -16,7 +16,7 @@ class Presets(Enum):
         obj._value_ = value
         return obj
 
-    def __init__(self, size, capstones, stones) -> None:
+    def __init__(self, size: int, capstones: int, stones: int) -> None:
         self.size = size
         self.capstones = capstones
         self.stones = stones

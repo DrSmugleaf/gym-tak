@@ -12,5 +12,4 @@ class Piece:
     def flatten(self) -> None:
         if self.type is not Types.STANDING_STONE:
             raise TypeError("Can't flatten anything other than a standing stone")
-
         self.type = Types.FLAT_STONE
