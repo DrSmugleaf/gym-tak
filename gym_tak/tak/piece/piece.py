@@ -13,3 +13,9 @@ class Piece:
         if self.type is not Types.STANDING_STONE:
             raise TypeError("Can't flatten anything other than a standing stone")
         self.type = Types.FLAT_STONE
+
+    def to_float(self) -> float:
+        return self.color.value * self.type.value
+
+    def to_string(self) -> str:
+        return self.color.string + self.type.string
