@@ -1,11 +1,9 @@
 from enum import Enum
 
-from gym_tak.frozen_enum import freeze
-from gym_tak.read_only_properties import read_only_properties
+from gym_tak.read_only import read_only_enum
 
 
-@freeze
-@read_only_properties('size', 'capstones', 'stones')
+@read_only_enum('size', 'capstones', 'stones')
 class Presets(Enum):
     FOUR = 4, 0, 15
     FIVE = 5, 1, 21

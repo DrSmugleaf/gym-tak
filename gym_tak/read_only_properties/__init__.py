@@ -1,1 +1,0 @@
-from gym_tak.read_only_properties.read_only_properties import read_only_properties

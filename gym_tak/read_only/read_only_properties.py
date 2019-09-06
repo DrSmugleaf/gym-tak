@@ -1,7 +1,5 @@
 def read_only_properties(*args):
-
     def class_rebuilder(cls):
-
         def __setattr__(self, key, value):
             if key in args and key in self.__dict__:
                 raise AttributeError("Can't modify %s" % key)
