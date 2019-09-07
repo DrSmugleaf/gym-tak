@@ -1,4 +1,4 @@
-from gym_tak.tak import Presets
+from gym_tak.tak.board import Presets
 from gym_tak.tak.piece import Colors, Types
 
 

@@ -1,5 +1,3 @@
-from typing import Any
-
 from gym_tak.tak.piece import Types, Colors
 
 
