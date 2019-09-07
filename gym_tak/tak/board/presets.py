@@ -20,4 +20,5 @@ class Presets(Enum):
         self.size = size
         self.capstones = capstones
         self.stones = stones
+        self.pieces = capstones + stones
         self.carry_limit = size
