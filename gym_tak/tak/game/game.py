@@ -1,6 +1,6 @@
 from gym_tak.tak.board import Presets
 from gym_tak.tak.board import Board
-from gym_tak.tak.piece import Colors
+from gym_tak.tak.piece import Colors, Types
 from gym_tak.tak.player import Player
 
 
@@ -15,8 +15,17 @@ class Game:
         self.next_player = player1
         self.active = True
 
+    def can_move(self, player: Player, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> bool:
+        return self.active and player is self.next_player and self.board.can_move(column_from, row_from, column_to, row_to, pieces)
+
+    def move(self, player: Player, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> None:
+        assert self.can_move(player, column_from, row_from, column_to, row_to, pieces)
+        self.board.move(column_from, row_from, column_to, row_to, pieces)
+
     def can_place(self, player: Player, column: int, row: int) -> bool:
         return self.active and player is self.next_player and self.board.can_place(column, row)
 
-    def can_move(self, player: Player, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> bool:
-        return self.active and player is self.next_player and self.board.can_move(column_from, row_from, column_to, row_to, pieces)
+    def place(self, player: Player, type_: Types, column: int, row: int) -> None:
+        assert self.can_place(player, column, row)
+        piece = player.hand.take_piece(type_)
+        self.board.place(piece, column, row)

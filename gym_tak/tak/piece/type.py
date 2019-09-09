@@ -1,7 +1,11 @@
 from __future__ import annotations
 from enum import Enum
 
+import numpy as np
+from numpy.core.multiarray import ndarray
+
 from gym_tak.read_only import read_only_enum
+from gym_tak.tak.piece import Piece
 
 
 @read_only_enum('blocks', 'ignores_block', 'forms_road', 'value', 'string')
@@ -32,4 +36,15 @@ class Types(Enum):
                 return type_
 
     def can_move(self, to_top_piece_type: Types) -> bool:
+        if self is self.CAPSTONE:
+            return to_top_piece_type is not self.CAPSTONE
         return self.ignores_block or not to_top_piece_type.blocks
+
+    def move(self, to: ndarray, pieces: int):
+        if pieces == 1 and self is self.CAPSTONE and len(to) > 0:
+            to_top_index = to.nonzero()[-1]
+            to_top_value = to[to_top_index]
+            to_top_piece = Piece.from_int(to_top_value)
+            if to_top_piece is Types.STANDING_STONE:
+                to_top_piece.type = Types.FLAT_STONE
+                to[to_top_index] = to_top_piece.to_int()
