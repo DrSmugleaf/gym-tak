@@ -3,7 +3,7 @@ from enum import Enum
 from gym_tak.read_only import read_only_enum
 
 
-@read_only_enum('size', 'capstones', 'stones', 'carry_limit')
+@read_only_enum('size', 'capstones', 'stones', 'pieces', 'carry_limit')
 class Presets(Enum):
     FOUR = 4, 0, 15
     FIVE = 5, 1, 21
