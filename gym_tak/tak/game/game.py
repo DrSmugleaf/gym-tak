@@ -29,3 +29,15 @@ class Game:
         assert self.can_place(player, column, row)
         piece = player.hand.take_piece(type_)
         self.board.place(piece, column, row)
+
+    def get_other_player(self, player: Player) -> Player:
+        if player is self.player1:
+            return self.player2
+        elif player is self.player2:
+            return self.player1
+        else:
+            raise ValueError('Player %s is not in this game' % player.name)
+
+    def surrender(self, player: Player) -> None:
+        self.active = False
+        self.winner = self.get_other_player(player)

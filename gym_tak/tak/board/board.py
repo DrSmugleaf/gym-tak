@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 from numpy.core.multiarray import ndarray
 
@@ -14,6 +16,23 @@ class Board:
     @staticmethod
     def is_adjacent(column1: int, row1: int, column2: int, row2: int) -> bool:
         return abs(column1 - column2) <= 1 and abs(row1 - row2) <= 1
+
+    @staticmethod
+    def _get_adjacent(index: int, *args: []) -> List[int]:
+        adjacent = []
+
+        for array in args:
+            for offset in [-1, 1]:
+                new_index = index + offset
+                if new_index < 0 or new_index > len(array):
+                    continue
+
+                adjacent.append(array[new_index])
+
+        return adjacent
+
+    def get_adjacent(self, column: int, row: int) -> List[int]:
+        return self._get_adjacent(self.rows[:, column], self.rows[row])
 
     def get_square(self, column: int, row: int) -> ndarray:
         return self.rows[row, column]

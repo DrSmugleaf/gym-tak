@@ -1,7 +1,7 @@
 from __future__ import annotations
+
 from enum import Enum
 
-import numpy as np
 from numpy.core.multiarray import ndarray
 
 from gym_tak.read_only import read_only_enum

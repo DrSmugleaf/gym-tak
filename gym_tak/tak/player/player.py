@@ -9,3 +9,6 @@ class Player:
         self.name = name
         self.game = game
         self.hand = Hand(game.preset, color)
+
+    def surrender(self) -> None:
+        self.game.surrender(self)
