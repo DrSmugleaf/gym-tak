@@ -17,22 +17,19 @@ class Board:
     def is_adjacent(column1: int, row1: int, column2: int, row2: int) -> bool:
         return abs(column1 - column2) <= 1 and abs(row1 - row2) <= 1
 
-    @staticmethod
-    def _get_adjacent(index: int, *args: []) -> List[int]:
+    def get_adjacent_coordinates(self, column: int, row: int) -> List[(int, int)]:
         adjacent = []
 
-        for array in args:
-            for offset in [-1, 1]:
-                new_index = index + offset
-                if new_index < 0 or new_index > len(array):
-                    continue
+        for offset in [-1, 1]:
+            new_column = column + offset
+            if 0 <= new_column < self.preset.size:
+                adjacent.append((new_column, row))
 
-                adjacent.append(array[new_index])
+            new_row = row + offset
+            if 0 <= new_row < self.preset.size:
+                adjacent.append((column, new_row))
 
         return adjacent
-
-    def get_adjacent(self, column: int, row: int) -> List[int]:
-        return self._get_adjacent(self.rows[:, column], self.rows[row])
 
     def get_square(self, column: int, row: int) -> ndarray:
         return self.rows[row, column]

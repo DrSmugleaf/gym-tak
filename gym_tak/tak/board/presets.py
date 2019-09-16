@@ -33,9 +33,9 @@ class Presets(Enum):
             for row in range(0, self.size):
                 for type_ in Types:
                     actions.append((Actions.PLACE.value, column, row, type_))
-                for adjacent in board.get_adjacent(column, row):
+                for adjacent in board.get_adjacent_coordinates(column, row):
                     for pieces in range(1, self.carry_limit + 1):
-                        actions.append((Actions.MOVE.value, column, row, pieces))
+                        actions.append((Actions.MOVE.value, (column, row), adjacent, pieces))
 
         self.actions = actions
 
