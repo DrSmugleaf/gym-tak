@@ -17,7 +17,7 @@ class TakGame(Game):
         self.player1 = Player(player1, self, Colors.BLACK)
         self.player2 = Player(player2, self, Colors.WHITE)
         self.winner = None
-        self.next_player = player1
+        self.next_player = self.player1
         self.active = True
 
     def can_move(self, player: Player, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> bool:
