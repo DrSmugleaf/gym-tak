@@ -1,4 +1,3 @@
-from __future__ import annotations
 from enum import Enum
 
 from gym_tak.read_only import read_only_enum
@@ -16,10 +15,10 @@ class Actions(Enum):
         return obj
 
     def __init__(self, value: int) -> None:
-        self.value = value
+        self.int_value = value
 
     @classmethod
-    def from_int(cls, value: int) -> Actions:
+    def from_int(cls, value: int) -> 'Actions':
         for action in Actions:
             if action.value == value:
                 return action

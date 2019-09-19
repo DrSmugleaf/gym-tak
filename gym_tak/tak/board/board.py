@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy as np
 from numpy.core.multiarray import ndarray
 
@@ -16,20 +14,6 @@ class Board:
     @staticmethod
     def is_adjacent(column1: int, row1: int, column2: int, row2: int) -> bool:
         return abs(column1 - column2) <= 1 and abs(row1 - row2) <= 1
-
-    def get_adjacent_coordinates(self, column: int, row: int) -> List[(int, int)]:
-        adjacent = []
-
-        for offset in [-1, 1]:
-            new_column = column + offset
-            if 0 <= new_column < self.preset.size:
-                adjacent.append((new_column, row))
-
-            new_row = row + offset
-            if 0 <= new_row < self.preset.size:
-                adjacent.append((column, new_row))
-
-        return adjacent
 
     def get_square(self, column: int, row: int) -> ndarray:
         return self.rows[row, column]
@@ -72,7 +56,7 @@ class Board:
 
         while pieces > 0:
             piece = origin_square[origin_top_index]
-            Types.from_int(piece).move(destination_square, pieces)
+            piece.move(destination_square, pieces)
             origin_square[origin_top_index] = 0
             origin_top_index -= 1
             destination_square[destination_top_index] = piece

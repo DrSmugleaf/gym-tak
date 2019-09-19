@@ -1,1 +1,1 @@
-from gym_tak.tak.game.game import Game
+from gym_tak.tak.game.tak_game import TakGame

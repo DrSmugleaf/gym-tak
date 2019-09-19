@@ -1,8 +1,7 @@
-from __future__ import annotations
 from enum import Enum
+from typing import List, Tuple
 
 from gym_tak.read_only import read_only_enum
-from gym_tak.tak.board import Board
 from gym_tak.tak.piece import Types
 from gym_tak.tak.player.actions import Actions
 
@@ -28,17 +27,30 @@ class Presets(Enum):
         self.carry_limit = size
 
         actions = []
-        board = Board(self)
         for column in range(0, self.size):
             for row in range(0, self.size):
                 for type_ in Types:
-                    actions.append((Actions.PLACE.value, column, row, type_))
-                for adjacent in board.get_adjacent_coordinates(column, row):
+                    actions.append((Actions.PLACE.int_value, column, row, type_))
+                for adjacent in self.get_adjacent_coordinates(column, row):
                     for pieces in range(1, self.carry_limit + 1):
-                        actions.append((Actions.MOVE.value, (column, row), adjacent, pieces))
+                        actions.append((Actions.MOVE.int_value, (column, row), adjacent, pieces))
 
         self.actions = actions
 
     @classmethod
-    def get_default(cls) -> Presets:
+    def get_default(cls) -> 'Presets':
         return cls.FIVE
+
+    def get_adjacent_coordinates(self, column: int, row: int) -> List[Tuple[int, int]]:
+        adjacent = []
+
+        for offset in [-1, 1]:
+            new_column = column + offset
+            if 0 <= new_column < self.size:
+                adjacent.append((new_column, row))
+
+            new_row = row + offset
+            if 0 <= new_row < self.size:
+                adjacent.append((column, new_row))
+
+        return adjacent

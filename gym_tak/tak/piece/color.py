@@ -1,4 +1,3 @@
-from __future__ import annotations
 from enum import Enum
 
 from gym_tak.read_only import read_only_enum
@@ -16,11 +15,11 @@ class Colors(Enum):
         return obj
 
     def __init__(self, value: int, string: str) -> None:
-        self.value = value
+        self.int_value = value
         self.string = string
 
     @classmethod
-    def from_int(cls, value: int) -> Colors:
+    def from_piece_value(cls, value: int) -> 'Colors':
         if value > 0:
             return Colors.BLACK
         elif value < 0:

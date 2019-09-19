@@ -1,14 +1,12 @@
-from gym_tak.tak.board import Presets
 from gym_tak.tak.piece import Colors, Types, Piece
 
 
 class Hand:
 
-    def __init__(self, preset: Presets, color: Colors) -> None:
-        self.preset = preset
+    def __init__(self, capstones: int, stones: int, color: Colors) -> None:
         self.color = color
-        self.capstones = preset.capstones
-        self.stones = preset.stones
+        self.capstones = capstones
+        self.stones = stones
 
     def get_amount(self, type_: Types) -> int:
         if type_ is Types.CAPSTONE:
@@ -28,8 +26,8 @@ class Hand:
         return False
 
     def reset(self) -> None:
-        self.capstones = self.preset.capstones
-        self.stones = self.preset.stones
+        self.capstones = self.capstones
+        self.stones = self.stones
 
     def take_piece(self, type_: Types) -> Piece:
         assert self.has(type_)
