@@ -1,4 +1,9 @@
+IPython
+imageio
+matplotlib
+pyvirtualdisplay
+tensorflow
 gym==0.14.0
 numpy==1.17.1
-setuptools==40.6.2
+setuptools>=40.6.2
 typing==3.7.4.1
