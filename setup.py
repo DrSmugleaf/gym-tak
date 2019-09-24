@@ -8,7 +8,7 @@ with open('requirements.txt', 'r') as f:
 
 setuptools.setup(
     name="gym_tak",
-    version='0.0.2',
+    version='0.0.3',
     author='DrSmugleaf',
     long_description=long_description,
     long_description_content_type='text/markdown',
