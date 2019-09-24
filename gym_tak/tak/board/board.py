@@ -9,7 +9,7 @@ class Board:
 
     def __init__(self, preset: Presets) -> None:
         self.preset = preset
-        self.rows = np.zeros((preset.size, preset.size, preset.stones * 2 + 1), np.int8)
+        self.rows = np.zeros((preset.size, preset.size, preset.max_pieces), np.int8)
 
     @staticmethod
     def is_adjacent(column1: int, row1: int, column2: int, row2: int) -> bool:
@@ -67,4 +67,4 @@ class Board:
         return self.get_square(column, row)[0] == 0
 
     def place(self, piece: Piece, column: int, row: int) -> None:
-        (self.get_square(column, row) == 0).nonzero()[0] = piece.to_int()
+        self.get_square(column, row)[0] = piece.to_int()

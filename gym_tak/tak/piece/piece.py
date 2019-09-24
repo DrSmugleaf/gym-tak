@@ -11,7 +11,7 @@ class Piece:
 
     @classmethod
     def from_int(cls, value: int) -> 'Piece':
-        color = Colors.from_piece_value(value)
+        color = Colors.from_int(value)
         type_ = Types.from_int(value)
         return cls(color, type_)
 

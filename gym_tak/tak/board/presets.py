@@ -3,7 +3,6 @@ from typing import List, Tuple
 
 from gym_tak.read_only import read_only_enum
 from gym_tak.tak.piece import Types
-from gym_tak.tak.player.actions import Actions
 
 
 @read_only_enum('size', 'capstones', 'stones', 'pieces', 'carry_limit', 'actions')
@@ -24,16 +23,17 @@ class Presets(Enum):
         self.capstones = capstones
         self.stones = stones
         self.pieces = capstones + stones
+        self.max_pieces = stones * 2 + 1
         self.carry_limit = size
 
         actions = []
         for column in range(0, self.size):
             for row in range(0, self.size):
                 for type_ in Types:
-                    actions.append((Actions.PLACE.int_value, column, row, type_))
+                    actions.append((2, column, row, type_))
                 for adjacent in self.get_adjacent_coordinates(column, row):
                     for pieces in range(1, self.carry_limit + 1):
-                        actions.append((Actions.MOVE.int_value, (column, row), adjacent, pieces))
+                        actions.append((1, (column, row), adjacent, pieces))
 
         self.actions = actions
 

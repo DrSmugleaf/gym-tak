@@ -5,7 +5,9 @@ class Hand:
 
     def __init__(self, capstones: int, stones: int, color: Colors) -> None:
         self.color = color
+        self._capstones = capstones
         self.capstones = capstones
+        self._stones = stones
         self.stones = stones
 
     def get_amount(self, type_: Types) -> int:
@@ -26,8 +28,8 @@ class Hand:
         return False
 
     def reset(self) -> None:
-        self.capstones = self.capstones
-        self.stones = self.stones
+        self.capstones = self._capstones
+        self.stones = self._stones
 
     def take_piece(self, type_: Types) -> Piece:
         assert self.has(type_)

@@ -19,7 +19,7 @@ class Colors(Enum):
         self.string = string
 
     @classmethod
-    def from_piece_value(cls, value: int) -> 'Colors':
+    def from_int(cls, value: int) -> 'Colors':
         if value > 0:
             return Colors.BLACK
         elif value < 0:
