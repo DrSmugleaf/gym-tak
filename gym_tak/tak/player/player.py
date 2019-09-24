@@ -20,9 +20,12 @@ class Player:
         actions = []
 
         for i, action in enumerate(self.game.preset.actions):
-            if (action[0] is 2 and self.game.can_place(self, action[1], action[2], action[3], board)) or \
+            if (action[0] is 2 and self.game.can_place(self, action[1], action[2], action[3])) or \
                     (action[0] is 1 and self.game.can_move(self, action[1][0], action[1][1],
                                                            action[2][0], action[2][1], action[3])):
                 actions.append(action)
 
         return actions
+
+    def reset(self) -> None:
+        self.hand.reset()

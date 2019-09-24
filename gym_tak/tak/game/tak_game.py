@@ -28,12 +28,12 @@ class TakGame:
         self.board.move(column_from, row_from, column_to, row_to, pieces)
         self.next_player = self.get_other_player(self.next_player)
 
-    def can_place(self, player: Player, column: int, row: int, type_: Types, board: np.ndarray) -> bool:
-        return self.active and player is self.next_player and player.hand.has(type_) and board[row, column, 0] == 0
+    def can_place(self, player: Player, column: int, row: int, type_: Types) -> bool:
+        return self.active and player is self.next_player and player.hand.has(type_) and self.board.rows[row, column, 0] == 0
 
     def place(self, player: Player, column: int, row: int, type_: Types) -> None:
         print(player.name + " placing in column " + str(column) + " row " + str(row))
-        assert self.can_place(player, column, row, type_, self.board.rows)
+        assert self.can_place(player, column, row, type_)
         piece = player.hand.take_piece(type_)
         self.board.place(piece, column, row)
         self.next_player = self.player2
@@ -57,3 +57,11 @@ class TakGame:
     def surrender(self, player: Player) -> None:
         self.active = False
         self.winner = self.get_other_player(player)
+
+    def reset(self) -> None:
+        self.board.reset()
+        self.player1.reset()
+        self.player2.reset()
+        self.winner = None
+        self.next_player = self.player1
+        self.active = True

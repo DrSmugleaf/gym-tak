@@ -68,3 +68,6 @@ class Board:
 
     def place(self, piece: Piece, column: int, row: int) -> None:
         self.get_square(column, row)[0] = piece.to_int()
+
+    def reset(self):
+        self.rows = np.zeros((self.preset.size, self.preset.size, self.preset.max_pieces), np.int8)
