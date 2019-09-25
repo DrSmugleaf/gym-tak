@@ -15,6 +15,9 @@ class GymEnv(gym.Env):
     def __init__(self):
         self.game = TakGame(Presets.get_default(), 'Agent', 'Opponent')
         self.player = self.game.player1
+        self.action_space = gym.spaces.Discrete(len(self.game.preset.actions))
+        high = np.array([3] * len(self.game.board.rows.flatten()))
+        self.observation_space = gym.spaces.Box(-high, high, dtype=np.int8)
 
     def __del__(self):
         self.player.surrender()
