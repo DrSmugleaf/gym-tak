@@ -1,6 +1,7 @@
 import logging
 
 import gym
+import numpy as np
 
 from gym_tak.tak.board import Presets
 from gym_tak.tak.game import TakGame
@@ -8,7 +9,7 @@ from gym_tak.tak.game import TakGame
 logger = logging.getLogger(__name__)
 
 
-class TakEnv(gym.Env):
+class GymEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
@@ -19,6 +20,13 @@ class TakEnv(gym.Env):
         self.player.surrender()
 
     def step(self, action):
+        response = self._step(action)
+        if not self.game.active:
+            self.reset()
+
+        return response
+
+    def _step(self, action):
         action = self.game.preset.actions[action]
         if action[0] == 2:
             _, column, row, type_ = action

@@ -1,1 +1,1 @@
-from gym_tak.envs.tak_env import TakEnv
+from gym_tak.envs.gym_env import GymEnv

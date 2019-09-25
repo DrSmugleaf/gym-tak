@@ -1,7 +1,3 @@
-from typing import Tuple
-
-import numpy as np
-
 from gym_tak.tak.board import Presets, Board
 from gym_tak.tak.piece import Colors, Types
 from gym_tak.tak.player import Player
