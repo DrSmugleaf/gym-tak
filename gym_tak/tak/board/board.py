@@ -2,14 +2,14 @@ import numpy as np
 from numpy.core.multiarray import ndarray
 
 from gym_tak.tak.board import Presets
-from gym_tak.tak.piece import Types, Piece
+from gym_tak.tak.piece import Types, Piece, Colors
 
 
 class Board:
 
     def __init__(self, preset: Presets) -> None:
         self.preset = preset
-        self.rows = np.zeros((preset.size, preset.size, preset.max_pieces), np.int8)
+        self.rows = np.zeros((preset.size, preset.size, preset.max_pieces), int)
 
     @staticmethod
     def is_adjacent(column1: int, row1: int, column2: int, row2: int) -> bool:
@@ -26,12 +26,16 @@ class Board:
         stack = self.get_stack(column, row)
         return stack[-1]
 
-    def can_move(self, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> bool:
+    def can_move(self, player_color: Colors, column_from: int, row_from: int, column_to: int, row_to: int, pieces: int) -> bool:
         adjacent = self.is_adjacent(column_from, row_from, column_to, row_to)
         under_limit = pieces <= self.preset.carry_limit
         origin = self.get_square(column_from, row_from)
         under_stack_size = pieces <= np.count_nonzero(origin)
         if not adjacent or not under_limit or pieces < 0 or not under_stack_size:
+            return False
+
+        origin_top_value = self.get_top_value(column_from, row_from)
+        if not Colors.equals(origin_top_value, player_color.int_value):
             return False
 
         destination_empty = self.get_square(column_to, row_to)[0] == 0
@@ -41,7 +45,6 @@ class Board:
         destination_top_value = self.get_top_value(column_to, row_to)
         destination_top_type = Types.from_int(destination_top_value)
         destination_top_blocks = destination_top_type.blocks
-        origin_top_value = self.get_top_value(column_from, row_from)
         origin_top_type = Types.from_int(origin_top_value)
         if pieces == 1:
             return origin_top_type.can_move(destination_top_type)
@@ -56,10 +59,11 @@ class Board:
 
         while pieces > 0:
             piece = origin_square[origin_top_index]
+            piece = Piece.from_int(piece)
             piece.move(destination_square, pieces)
             origin_square[origin_top_index] = 0
             origin_top_index -= 1
-            destination_square[destination_top_index] = piece
+            destination_square[destination_top_index] = piece.to_int()
             destination_top_index -= 1
             pieces -= 1
 

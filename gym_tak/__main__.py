@@ -1,7 +1,4 @@
-from gym_tak import *
-from tf_agents.environments import suite_gym, tf_py_environment
+from gym_tak.agent import tensorflow_agent
 
-env = suite_gym.load('tak-v0')
-tf_env = tf_py_environment.TFPyEnvironment(env)
-print(tf_env.time_step_spec())
-print(tf_env.action_spec())
+loss = tensorflow_agent.train_eval('E:\Projects\Python\gym-tak')
+print(loss)

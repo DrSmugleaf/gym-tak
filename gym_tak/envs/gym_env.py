@@ -5,50 +5,36 @@ import numpy as np
 
 from gym_tak.tak.board import Presets
 from gym_tak.tak.game import TakGame
+from gym_tak.tak.player.bot import RandomPlayer
 
 logger = logging.getLogger(__name__)
 
 
 class GymEnv(gym.Env):
     metadata = {'render.modes': ['human']}
+    reward_range = (-1, 1)
 
     def __init__(self):
         self.game = TakGame(Presets.get_default(), 'Agent', 'Opponent')
         self.player = self.game.player1
         self.action_space = gym.spaces.Discrete(len(self.game.preset.actions))
         high = np.array([3] * len(self.game.board.rows.flatten()))
-        self.observation_space = gym.spaces.Box(-high, high, dtype=np.int8)
+        self.observation_space = gym.spaces.Box(-high, high, dtype=np.float32)
 
     def __del__(self):
         self.player.surrender()
 
     def step(self, action):
-        response = self._step(action)
+        return self._step(action)
+
+    def _step(self, action):
         if not self.game.active:
             self.reset()
 
-        return response
-
-    def _step(self, action):
         action = self.game.preset.actions[action]
-        if action[0] == 2:
-            _, column, row, type_ = action
-            if not self.game.can_place(self.player, column, row, type_):
-                self.player.surrender()
-                return self.get_response()
-
-            self.game.place(self.player, column, row, type_)
-        elif action[0] == 1:
-            _, from_, to, pieces = action
-            column_from, row_from = from_
-            column_to, row_to = to
-            if not self.game.can_move(self.player, column_from, row_from, column_to, row_to, pieces):
-                self.player.surrender()
-                return self.get_response()
-
-            self.game.move(self.player, action[1][0], action[1][1], action[2][0], action[2][1], action[3])
-        else:
-            raise ValueError('Unrecognized action type ' + str(action))
+        self.player.do_action(action)
+        if self.game.active:
+            RandomPlayer.do_action(self.game.player2)
 
         return self.get_response()
 

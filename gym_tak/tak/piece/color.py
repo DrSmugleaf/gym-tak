@@ -1,5 +1,7 @@
 from enum import Enum
 
+import numpy as np
+
 from gym_tak.read_only import read_only_enum
 
 
@@ -24,3 +26,7 @@ class Colors(Enum):
             return Colors.BLACK
         elif value < 0:
             return Colors.WHITE
+
+    @staticmethod
+    def equals(value1: int, value2: int):
+        return np.sign(value1) == np.sign(value2)

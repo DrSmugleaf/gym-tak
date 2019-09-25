@@ -1,1 +1,1 @@
-from gym_tak.agent.tensorflow_environment import TensorFlowEnvironment
+from gym_tak.agent.tensorflow_agent import train_eval
