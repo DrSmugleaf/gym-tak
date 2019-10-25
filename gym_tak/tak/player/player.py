@@ -28,12 +28,11 @@ class Player:
     def reset(self) -> None:
         self.hand.reset()
 
-    def do_action(self, action: Tuple) -> None:
+    def do_action(self, action: Tuple) -> bool:
         if action[0] == 2:
             _, column, row, type_ = action
             if not self.game.can_place(self, column, row, type_):
-                self.surrender()
-                return
+                return False
 
             self.game.place(self, column, row, type_)
         elif action[0] == 1:
@@ -41,9 +40,10 @@ class Player:
             column_from, row_from = from_
             column_to, row_to = to
             if not self.game.can_move(self, column_from, row_from, column_to, row_to, pieces):
-                self.surrender()
-                return
+                return False
 
             self.game.move(self, action[1][0], action[1][1], action[2][0], action[2][1], action[3])
         else:
             raise ValueError('Unrecognized action type ' + str(action))
+
+        return True

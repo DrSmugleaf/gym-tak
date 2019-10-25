@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import logging
 import os
 import time
 
 from absl import app
 from absl import flags
-from absl import logging
 
 import gin
 import tensorflow as tf
@@ -21,7 +21,7 @@ from tf_agents.eval import metric_utils
 from tf_agents.metrics import tf_metrics
 from tf_agents.networks import q_network
 from tf_agents.networks import q_rnn_network
-from tf_agents.policies import random_tf_policy
+from tf_agents.policies import random_tf_policy, tf_policy
 from tf_agents.replay_buffers import tf_uniform_replay_buffer
 from tf_agents.utils import common
 
@@ -33,14 +33,13 @@ flags.DEFINE_multi_string('gin_file', None, 'Paths to the gin-config files.')
 flags.DEFINE_multi_string('gin_param', None, 'Gin binding parameters.')
 
 FLAGS = flags.FLAGS
-logging.set_verbosity(logging.INFO)
 
 
 @gin.configurable
 def train_eval(
         root_dir,
         env_name='tak-v0',
-        num_iterations=10,
+        num_iterations=100,
         train_sequence_length=1,
         # Params for QNetwork
         fc_layer_params=(100,),
@@ -77,7 +76,7 @@ def train_eval(
         log_interval=1000,
         summary_interval=1000,
         summaries_flush_secs=10,
-        debug_summaries=True,
+        debug_summaries=False,
         summarize_grads_and_vars=False,
         eval_metrics_callback=None):
     """A simple train and eval for DQN."""
@@ -97,7 +96,8 @@ def train_eval(
     ]
 
     global_step = tf.compat.v1.train.get_or_create_global_step()
-    with tf.compat.v2.summary.record_if(lambda: tf.math.equal(global_step % summary_interval, 0)):
+    with tf.compat.v2.summary.record_if(
+            lambda: tf.math.equal(global_step % summary_interval, 0)):
         tf_env = tf_py_environment.TFPyEnvironment(suite_gym.load(env_name))
         eval_tf_env = tf_py_environment.TFPyEnvironment(suite_gym.load(env_name))
 
@@ -276,3 +276,15 @@ def train_eval(
                 metric_utils.log_metrics(eval_metrics)
 
         return train_loss
+
+
+def main(_):
+    tf.compat.v1.enable_v2_behavior()
+    gin.parse_config_files_and_bindings(FLAGS.gin_file, FLAGS.gin_param)
+    train_eval(FLAGS.root_dir, num_iterations=FLAGS.num_iterations)
+
+
+if __name__ == '__main__':
+    from gym_tak.envs.gym_env import *
+    flags.mark_flag_as_required('root_dir')
+    app.run(main)

@@ -20,6 +20,7 @@ class GymEnv(gym.Env):
         self.action_space = gym.spaces.Discrete(len(self.game.preset.actions))
         high = np.array([3] * len(self.game.board.rows.flatten()))
         self.observation_space = gym.spaces.Box(-high, high, dtype=np.float32)
+        self.tries = 0
 
     def __del__(self):
         self.player.surrender()
@@ -32,13 +33,24 @@ class GymEnv(gym.Env):
             self.reset()
 
         action = self.game.preset.actions[action]
-        self.player.do_action(action)
+        valid = self.player.do_action(action)
+
+        if valid:
+            self.tries = 0
+        else:
+            self.tries += 1
+
+            if self.tries > 100:
+                print('Too many invalid actions')
+                self.player.surrender()
+
         if self.game.active:
             RandomPlayer.do_action(self.game.player2)
 
         return self.get_response()
 
     def reset(self):
+        self.tries = 0
         self.game.reset()
         return self.get_state()
 
