@@ -1,5 +1,5 @@
 setuptools==40.8.0
-numpy==1.17.0
+numpy==1.22.0
 gym==0.14.0
 absl
 gin==0.1.006
